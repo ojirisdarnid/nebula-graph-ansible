@@ -9,5 +9,14 @@
     setup_server: false
     install_nebula: false
     backup_nebula_config: false
-    update_nebula_config: false
-    start_nebula: true
+    update_nebula_config: true
+    start_nebula: false
+
+- name: Install Nebula Graph Studio
+  hosts: nebula_studio
+  roles:
+    - nebula_studio
+
+# Set value to true in this vars if you want to running some tasks
+  vars:
+    install_nebula_studio: false

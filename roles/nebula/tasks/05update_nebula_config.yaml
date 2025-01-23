@@ -1,129 +1,120 @@
 - name: Update specific lines in nebula-graphd.conf
   block:
-    - name: Ensure the meta_server_addrs is set correctly
+    - name: Configure meta_server_addrs parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
         regexp: '^--meta_server_addrs='
         line: "--meta_server_addrs={{ nebula_meta_server_addrs }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure the local_ip is set correctly
+    - name: Configure local_ip parameter based on host IP
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
         regexp: '^--local_ip='
         line: "--local_ip={{ ansible_host }}"
-        create: false
-        mode: "0644"
 
-    - name: Ensure enable_authorize is set to true
+    - name: Configure enable_authorize parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
         regexp: '^--enable_authorize='
-        line: "--enable_authorize=true"
+        line: "{{ nebula_auth }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure max_job_size is set to 16
+    - name: Configure max_job_size parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
         regexp: '^--max_job_size='
-        line: "--max_job_size=16"
+        line: "{{ nebula_maxjobsize }}"
         create: false
-        mode: "0644"
 
-- name: Add custom configuration at the end of nebula-graphd.conf
+    - name: Configure listen_backlog parameter based on group_vars
+      ansible.builtin.lineinfile:
+        path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
+        regexp: '^--listen_backlog='
+        line: "{{ nebula_listen_backlog }}"
+
+- name: Add custom parameter at the end of nebula-graphd.conf
   ansible.builtin.blockinfile:
     path: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
     block: |
-      --heartbeat_interval_secs=3
+      {{ nebula_heartbeat }}
       --timezone_name={{ nebula_timezone }}
     create: false
     marker: "# {mark} CUSTOM CONFIGURATION"
-    mode: "0644"
+
 
 - name: Update specific lines in nebula-metad.conf
   block:
-    - name: Ensure the meta_server_addrs is set correctly in nebula-metad.conf
+    - name: Configure meta_server_addrs parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-metad.conf"
         regexp: '^--meta_server_addrs='
         line: "--meta_server_addrs={{ nebula_meta_server_addrs }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure the local_ip is set correctly in nebula-metad.conf
+    - name: Configure local_ip parameter based on host IP
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-metad.conf"
         regexp: '^--local_ip='
         line: "--local_ip={{ ansible_host }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure the data_path is set correctly in nebula-metad.conf
+    - name: Configure data_path parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-metad.conf"
         regexp: '^--data_path='
-        line: "--data_path=/data/nebula/meta"
+        line: "{{ metad_datapath }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure heartbeat_interval_secs is set correctly in nebula-metad.conf
+    - name: Configure heartbeat_interval_secs parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-metad.conf"
         regexp: '^--heartbeat_interval_secs='
-        line: "--heartbeat_interval_secs=3"
+        line: "{{ nebula_heartbeat }}"
         create: false
-        mode: "0644"
 
-- name: Add custom configuration at the end of nebula-metad.conf
+- name: Add custom parameter at the end of nebula-metad.conf
   ansible.builtin.blockinfile:
     path: "{{ nebula_install_path }}/etc/nebula-metad.conf"
     block: |
       --timezone_name={{ nebula_timezone }}
     create: false
     marker: "# {mark} CUSTOM CONFIGURATION"
-    mode: "0644"
 
 - name: Update specific lines in nebula-storaged.conf
   block:
-    - name: Ensure the meta_server_addrs is set correctly in nebula-storaged.conf
+    - name: Configure meta_server_addrs parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
         regexp: '^--meta_server_addrs='
         line: "--meta_server_addrs={{ nebula_meta_server_addrs }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure the local_ip is set correctly in nebula-storaged.conf
+    - name: Configure local_ip parameter based on host IP
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
         regexp: '^--local_ip='
         line: "--local_ip={{ ansible_host }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure the data_path is set correctly in nebula-storaged.conf
+    - name: Configure data_path parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
         regexp: '^--data_path='
-        line: "--data_path=/data/nebula/storage"
+        line: "{{ storaged_datapath }}"
         create: false
-        mode: "0644"
 
-    - name: Ensure heartbeat_interval_secs is set correctly in nebula-storaged.conf
+    - name: Configure heartbeat_interval_secs parameter based on group_vars
       ansible.builtin.lineinfile:
         path: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
         regexp: '^--heartbeat_interval_secs='
-        line: "--heartbeat_interval_secs=3"
+        line: "{{ nebula_heartbeat }}"
         create: false
-        mode: "0644"
 
-- name: Add custom configuration at the end of nebula-storaged.conf
+- name: Add custom parameter at the end of nebula-storaged.conf
   ansible.builtin.blockinfile:
     path: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
     block: |
       --timezone_name={{ nebula_timezone }}
     create: false
     marker: "# {mark} CUSTOM CONFIGURATION"
-    mode: "0644"
