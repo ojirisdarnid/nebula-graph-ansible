@@ -1,0 +1,18 @@
+- name: Install Dependency
+  ansible.builtin.include_tasks: 01install_dependency.yaml
+  when: install_dependency
+- name: Configure system for Nebula Graph
+  ansible.builtin.include_tasks: 02setup_server.yaml
+  when: setup_server
+- name: Download & Install Nebula Graph
+  ansible.builtin.include_tasks: 03install_nebula.yaml
+  when: install_nebula
+- name: Backup Nebula Graph Config File
+  ansible.builtin.include_tasks: 04backup_nebula_config.yaml
+  when: backup_nebula_config
+- name: Update Nebula Graph Config File
+  ansible.builtin.include_tasks: 05update_nebula_config.yaml
+  when: update_nebula_config
+- name: Start Nebula Graph and Download Nebula Console
+  ansible.builtin.include_tasks: 06start_nebula.yaml
+  when: start_nebula

@@ -1,0 +1,8 @@
+[all:vars]
+ansible_user=root
+ansible_ssh_pass=rahasia2025
+
+[nebula]
+192.168.29.91 host_name='nebula01.cluster.testing' ansible_host=192.168.29.91
+192.168.29.92 host_name='nebula02.cluster.testing' ansible_host=192.168.29.92
+192.168.29.93 host_name='nebula03.cluster.testing' ansible_host=192.168.29.93

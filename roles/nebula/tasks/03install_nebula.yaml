@@ -1,0 +1,15 @@
+- name: Create a directory in opt for nebula
+  ansible.builtin.file:
+    path: /opt/nebula
+    state: directory
+    mode: '755'
+
+- name: Download Nebula Graph package
+  ansible.builtin.get_url:
+    url: https://oss-cdn.nebula-graph.io/package/{{ nebula_version }}/nebula-graph-{{ nebula_version }}.ubuntu2004.amd64.deb
+    dest: '/opt/nebula/nebula-graph-{{ nebula_version }}.ubuntu2004.amd64.deb'
+    mode: '0644'
+
+- name: Install Nebula Graph
+  ansible.builtin.apt:
+    deb: '/opt/nebula/nebula-graph-{{ nebula_version }}.ubuntu2004.amd64.deb'

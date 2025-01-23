@@ -1,0 +1,47 @@
+- name: Add custom configuration at the end of sysctl.conf
+  ansible.builtin.lineinfile:
+    path: "/etc/sysctl.conf"
+    line: "{{ item }}"
+  with_items:
+    - "{{ kernel_config }}"
+
+- name: Apply sysctl settings
+  ansible.builtin.command: sysctl --system
+  changed_when: true
+
+- name: Add custom configuration at the end of limits.conf
+  ansible.builtin.lineinfile:
+    path: "/etc/security/limits.conf"
+    line: "{{ item }}"
+  with_items:
+    - "{{ limits_config }}"
+
+- name: Update specific lines in /etc/default/grub
+  block:
+    - name: Ensure the RUB_CMDLINE_LINUX_DEFAULT is set correctly
+      ansible.builtin.lineinfile:
+        path: "/etc/default/grub"
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"'
+        mode: "0644"
+
+    - name: Ensure the GRUB_CMDLINE_LINUX is set correctly
+      ansible.builtin.lineinfile:
+        path: "/etc/default/grub"
+        regexp: '^GRUB_CMDLINE_LINUX='
+        line: 'GRUB_CMDLINE_LINUX="transparent_hugepage=never"'
+        mode: "0644"
+
+- name: Update GRUB configuration
+  ansible.builtin.command: update-grub
+  changed_when: true
+
+- name: Disable Transparent Huge Pages
+  ansible.builtin.shell: |
+    echo never > /sys/kernel/mm/transparent_hugepage/enabled
+    echo never > /sys/kernel/mm/transparent_hugepage/defrag
+  changed_when: true
+
+- name: Refresh swap settings
+  ansible.builtin.shell: swapoff -a && swapon -a
+  changed_when: true

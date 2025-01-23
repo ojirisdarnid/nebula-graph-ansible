@@ -1,0 +1,26 @@
+- name: Change hostname
+  ansible.builtin.hostname:
+    name: "{{ hostvars[inventory_hostname]['host_name'] }}"
+  when: hostvars[inventory_hostname]['host_name'] is defined
+
+- name: Update /etc/hosts for all hosts in nebula group
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^{{ hostvars[item]["ansible_host"] }}.*'
+    line: "{{ hostvars[item]['ansible_host'] }} {{ hostvars[item]['host_name'] }}"
+    state: present
+  loop: "{{ groups['nebula'] }}"
+  when: hostvars[inventory_hostname].get('host_name') is defined
+
+- name: Set timezone dynamically
+  community.general.timezone:
+    name: "Asia/Jakarta"
+
+- name: Install dependency for server
+  ansible.builtin.apt:
+    update_cache: true
+    autoremove: true
+
+- name: Reboot Server
+  ansible.builtin.reboot:
+    msg: "Rebooting machine please wait."

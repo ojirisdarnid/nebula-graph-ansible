@@ -1,0 +1,23 @@
+- name: Backup original nebula-graphd.conf
+  ansible.builtin.copy:
+    src: "{{ nebula_install_path }}/etc/nebula-graphd.conf"
+    dest: "{{ nebula_install_path }}/etc/nebula-graphd.conf.ori"
+    remote_src: true
+    backup: true
+    mode: preserve
+
+- name: Backup original nebula-metad.conf
+  ansible.builtin.copy:
+    src: "{{ nebula_install_path }}/etc/nebula-metad.conf"
+    dest: "{{ nebula_install_path }}/etc/nebula-metad.conf.ori"
+    remote_src: true
+    backup: true
+    mode: preserve
+
+- name: Backup original nebula-storaged.conf
+  ansible.builtin.copy:
+    src: "{{ nebula_install_path }}/etc/nebula-storaged.conf"
+    dest: "{{ nebula_install_path }}/etc/nebula-storaged.conf.ori"
+    remote_src: true
+    backup: true
+    mode: preserve

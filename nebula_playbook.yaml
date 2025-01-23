@@ -1,0 +1,13 @@
+- name: Install Nebula Graph
+  hosts: nebula
+  roles:
+    - nebula
+
+# Set value to true in this vars if you want to running some tasks
+  vars:
+    install_dependency: false
+    setup_server: false
+    install_nebula: false
+    backup_nebula_config: false
+    update_nebula_config: false
+    start_nebula: true
