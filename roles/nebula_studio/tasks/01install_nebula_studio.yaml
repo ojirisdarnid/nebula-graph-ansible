@@ -1,0 +1,9 @@
+- name: Download Nebula Graph Studio Package
+  ansible.builtin.get_url:
+    url: https://oss-cdn.nebula-graph.io/nebula-graph-studio/{{ studio_version }}/nebula-graph-studio-{{ studio_version }}.x86_64.deb
+    dest: '/opt/nebula/nebula-graph-studio-{{ studio_version }}.x86_64.deb'
+    mode: '0644'
+
+- name: Install Nebula Graph Studio
+  ansible.builtin.apt:
+    deb: '/opt/nebula/nebula-graph-studio-{{ studio_version }}.x86_64.deb'

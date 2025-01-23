@@ -1,0 +1,3 @@
+- name: Download & Install Nebula Graph Studio
+  ansible.builtin.include_tasks: 01install_nebula_studio.yaml
+  when: install_nebula_studio
