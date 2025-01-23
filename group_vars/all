@@ -1,8 +1,20 @@
+## Version Vars
 nebula_version: 3.8.0
-nebula_meta_server_addrs: "192.168.29.91:9559,192.168.29.92:9559,192.168.29.93:9559"
-nebula_timezone: "UTC+07:00"
-nebula_install_path: /usr/local/nebula
+studio_version: 3.10.0
 
+
+## Nebula Config Vars
+nebula_timezone: 'UTC+07:00'
+nebula_install_path: '/usr/local/nebula'
+nebula_meta_server_addrs: '[node1_ip]:9559,[node2_ip]:9559,[node3_ip]:9559'
+nebula_auth: '--enable_authorize=true'
+nebula_maxjobsize: '--max_job_size=16'
+nebula_listen_backlog: '--listen_backlog=65535'
+nebula_heartbeat: '-heartbeat_interval_secs=3'
+metad_datapath: '--data_path=/data/nebula/meta'
+storaged_datapath: '--data_path=/data/nebula/storage'
+
+## sysctl.conf Vars
 kernel_config:
 - 'fs.inotify.max_user_watches=5242880'
 - 'vm.swappiness=0'
@@ -16,8 +28,15 @@ kernel_config:
 - 'net.ipv4.tcp_wmem=4096 65535 16777216'
 - 'fs.file-max=9223372036854775807'
 
+## limits.conf Vars
 limits_config:
-- '*              soft         core           unlimited'
-- '*              hard         core           unlimited'
-- '*              soft         nofile          130000'
-- '*              hard         nofile          130000'
+- 'root           soft         core           unlimited'
+- 'root           hard         core           unlimited'
+- 'root           soft         nproc          65535'
+- 'root           hard         nproc          65535'
+- 'root           soft         nofile         65535'
+- 'root           hard         nofile         65535'
+
+## grub Vars
+grup_cmdline: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"'
+grup_cmdline2: 'GRUB_CMDLINE_LINUX="transparent_hugepage=never"'
