@@ -16,7 +16,7 @@
   with_items:
     - "{{ limits_config }}"
 
-- name: Update specific lines in /etc/default/grub 
+- name: Update specific lines in /etc/default/grub
   block:
     - name: Configure RUB_CMDLINE_LINUX_DEFAULT parameter based on group_vars
       ansible.builtin.lineinfile:
