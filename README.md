@@ -226,7 +226,7 @@ node_ip2 host_name='your.host.name2' ansible_host=node_ip2
 node_ip3 host_name='your.host.name3' ansible_host=node_ip3
 
 [nebula_studio]
-[node_ip]
+node_ip
 ```
 
 Update the following placeholders in your inventory file:  
